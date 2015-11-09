@@ -60,6 +60,11 @@ public:
 			int loc, val;
 			cin >>  loc;
 			cin >>  val;
+			
+			if( val == 0){ //if value ever zero, no need to insert in memory
+				n--;
+				continue;
+			}	
 
 			if (elem[r - 1] == NULL) {//first insertion
 				elem[r - 1] = new Node<T>(loc, val);
@@ -106,7 +111,7 @@ public:
 			cin >> rows;
 			cin >> columns;
 		}
-		catch (bad_typeid) { //error checkin to make sure rows and its type are correct 
+		catch (...) { //error checkin to make sure rows and its type are correct 
 			cout << "rows and columns must be ints" << endl;
 		}
 		if (rows < 1 || columns < 1) {
