@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <climits>
 #include "TailoredDataStructs.cpp"
 using namespace std;
 
@@ -9,7 +10,7 @@ void Kruskal(SparseMatrix<int>& graph, HBLTree<int>& edges, int size) {
 	bool * visited = new bool[size];
 	int totalWeight = 0;
 	int edgesAdded = 0;
-	vector<vector<int>> A;
+	vector<vector<int> > A;
 	int node1, node2, node1Loc, node2Loc;
 
 	for (int i = 0; i < size; i++)
@@ -24,6 +25,7 @@ void Kruskal(SparseMatrix<int>& graph, HBLTree<int>& edges, int size) {
 		bool node2Found = false;
 
 		if (A.empty()) {
+			//on first insertion
 			vector<int> comp;
 			comp.push_back(node1);
 			comp.push_back(node2);
@@ -33,8 +35,8 @@ void Kruskal(SparseMatrix<int>& graph, HBLTree<int>& edges, int size) {
 			edgesAdded++;
 			cout << "(" << node1 << ", " << node2 << ")" << endl;
 		} else {
-			for (int i = 0; i < A.size(); ++i) {
-				for (int j = 0; j < A[i].size(); ++j) {
+			for (int i = 0; i < int(A.size()); ++i) {
+				for (int j = 0; j < int(A[i].size()); ++j) {
 					if (A[i][j] == node1) {
 						node1Found = true;
 						node1Loc = i;
@@ -80,13 +82,14 @@ void Kruskal(SparseMatrix<int>& graph, HBLTree<int>& edges, int size) {
 				comp.insert(comp.end(), A[node1Loc].begin(), A[node1Loc].end());
 				comp.insert(comp.end(), A[node2Loc].begin(), A[node2Loc].end());
 				A.push_back(comp);
+				comp.erase(comp.begin() + node1Loc);
+				comp.erase(comp.begin() + node2Loc);
 				totalWeight += edges.top();
 				edges.pop();
 				edgesAdded++;
 				cout << "(" << node1 << ", " << node2 << ")" << endl;	
 			}
 			
-		
 		}
 	
 	
@@ -147,7 +150,7 @@ void Prim(SparseMatrix<int>& graph, int start, int size) {
 //Load up nodes into a queue, every dequeue and find smallest edge
 void Sollin(SparseMatrix<int>& graph, int size) {
 	//use vector as modified Q
-	vector<vector<int>> modQ;
+	vector<vector<int> > modQ;
 	bool * visited = new bool[size];
 	Node<int>* gptr;
 	int totalWeight = 0;
@@ -164,12 +167,12 @@ void Sollin(SparseMatrix<int>& graph, int size) {
 		vector<int> tmp = modQ.front();
 		modQ.erase(modQ.begin());
 		
-		for (int i = 0; i < tmp.size(); i++) {
+		for (int i = 0; i < int(tmp.size()); i++) {
 			visited[tmp[i]] = true;
 		}
 
 
-		for (int i = 0; i < tmp.size(); i++) {
+		for (int i = 0; i < int(tmp.size()); i++) {
 			gptr = graph.elem[tmp[i]];
 			while (gptr != NULL) {
 				if (gptr->data < min && !visited[gptr->index]) {
@@ -192,8 +195,8 @@ void Sollin(SparseMatrix<int>& graph, int size) {
 
 				
 		int listIndex = -1;
-		for (int i = 0; i < modQ.size(); i++) {
-			for (int j = 0; j < modQ[i].size(); j++) {
+		for (int i = 0; i < int(modQ.size()); i++) {
+			for (int j = 0; j < int(modQ[i].size()); j++) {
 				if (modQ[i][j] == minIndex) {
 					listIndex = i;
 					break;
